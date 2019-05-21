@@ -4,13 +4,9 @@ class MainController {
     fun refreshData() {
         repoModel.refreshData(object : OnDataReadyCallback {
             override fun onDataReady(data: String) {
-                onDataReady(data)
+                mainActivity.onDataReady(data)
             }
         })
-    }
-    
-    fun onDataReady(data: String) {
-        mainActivity.onDataReady(data)
     }
 }
 
