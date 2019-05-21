@@ -1,40 +1,31 @@
-class MainViewModel {
-    var repoModel: RepoModel = RepoModel()
-    val text = ObservableField<String>()
-    val isLoading = ObservableField<Boolean>()
+class MainController: AppCompatActivity {
+    ...
 
-    fun refresh(){
-        isLoading.set(true)
+    fun refreshData() {
         repoModel.refreshData(object : OnDataReadyCallback {
             override fun onDataReady(data: String) {
-                isLoading.set(false)
-                text.set(data)
+                onDataReady(data)
             }
         })
     }
-}
-
-class RepoModel {
-
-    fun refreshData() : String {
-        return "Some new data"
+    
+    fun onDataReady(data: String) {
+        mainActivity.onDataReady(data)
     }
 }
 
 class MainActivity : AppCompatActivity() {
 
-    lateinit var binding: ActivityMainBinding
-
-    var mainViewModel = MainViewModel()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        binding = DataBindingUtil
-            .setContentView(this, R.layout.activity_main)
-        
-        binding.viewModel = mainViewModel
-        binding.executePendingBindings()
-
+    var mainController = MainController()
+    ...
+    
+    fun refresh() {
+        progressBar.visibility = View.VISIBLE
+        mainController.refreshData()
+    }
+    
+    fun onDataReady(data: String) {
+        progressBar.visibility = View.GONE
+        mainController.text = data
     }
 }
