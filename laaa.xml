@@ -1,0 +1,29 @@
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android" >
+    <data>
+        <import type="android.view.View"/>
+
+        <variable
+            name="viewModel"
+            type="com.example.MainViewModel" />
+
+    </data>
+ 
+    <TextView
+        android:id="@+id/repository_name"
+        android:text="@{viewModel.text}"
+        ...
+        />
+        
+    <ProgressBar
+        android:id="@+id/loading"
+        android:visibility="@{viewModel.isLoading ? View.VISIBLE : View.GONE}"
+        ...    
+        />
+
+    <Button
+        android:id="@+id/refresh_button"
+        android:onClick="@{() -> viewModel.refresh()}"
+        android:clickable="@{viewModel.isLoading ? false : true}"
+        />    
+</layout>
