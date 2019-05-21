@@ -1,4 +1,4 @@
-class MainController: AppCompatActivity {
+class MainController {
     ...
 
     fun refreshData() {
