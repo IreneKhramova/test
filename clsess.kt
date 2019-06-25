@@ -68,7 +68,9 @@ class CompanyActivity : BaseActivity() {
 
         initToolbar()
         viewModelSubscribe()
-        fullscreenErrorView.setRetryClickListener { viewModel.onRetryButtonClick() }
+        fullscreenErrorView.setRetryClickListener { 
+            viewModel.onRetryButtonClick() 
+        }
         viewModel.onViewCreated()
     }
 
