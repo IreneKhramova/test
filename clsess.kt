@@ -12,7 +12,9 @@ class CompanyActivity : BaseProgressActivity() {
         activityComponent().inject(this)
 
         initToolbar()
-        fullscreenErrorView.setRetryClickListener { loadCompanyRequisites() }
+        fullscreenErrorView.setRetryClickListener {
+            loadCompanyRequisites() 
+        }
         loadCompanyRequisites()
     }
     
