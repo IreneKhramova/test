@@ -1,27 +1,37 @@
-class MainController {
-    ...
+class CompanyActivity : BaseProgressActivity() {
 
-    fun refreshData() {
-        repoModel.refreshData(object : OnDataReadyCallback {
-            override fun onDataReady(data: String) {
-                mainActivity.onDataReady(data)
-            }
-        })
-    }
-}
+    private var companyDisposable: Disposable? = null
+    private var companyRequisites: CompanyRequisites? = null
 
-class MainActivity : AppCompatActivity() {
+    @Inject
+    private lateinit var companyProvider: CompanyProvider
 
-    var mainController = MainController()
-    ...
-    
-    fun refresh() {
-        progressBar.visibility = View.VISIBLE
-        mainController.refreshData()
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_company)
+        activityComponent().inject(this)
+
+        initToolbar()
+        fullscreenErrorView.setRetryClickListener { loadCompanyRequisites() }
+        loadCompanyRequisites()
     }
     
-    fun onDataReady(data: String) {
-        progressBar.visibility = View.GONE
-        mainController.text = data
+    //...
+
+    private fun loadCompanyRequisites() {
+        showProgressView()
+
+        companyDisposable?.dispose()
+        companyDisposable = companyProvider.getCompanyRequisites()
+                .compose(asyncSingle())
+                .subscribe({
+                    showDataView()
+                    setCompany(it)
+                },
+                        {
+                            Timber.e(it)
+                            showErrorView(it)
+                        })
     }
+    // ...
 }
